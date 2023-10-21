@@ -1,0 +1,28 @@
+﻿@page
+@using RecipeKeeper.Data.Models;
+@model RecipeKeeper.Areas.Administration.Pages.RecipesModel
+@{
+	var db = new thisDb();
+}
+<h1>Recipe</h1>
+<hr />
+
+<table class="table">
+	<tr>
+		<th>ID</th>
+		<th>Name</th>
+		<th>Description</th>
+		<th></th>
+	</tr>
+
+	@foreach (Recipe i in db.Recipe.ToList())
+	{
+		
+		<tr>
+			<td>@i.Id</td>
+			<td>@i.Name</td>
+			<td>@i.Description</td>
+			<td></td>
+		</tr>
+	}
+</table>

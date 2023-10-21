@@ -1,0 +1,42 @@
+﻿@page
+@using RecipeKeeper.Data.Models;
+@model RecipeKeeper.Areas.Administration.Pages.IngredientCategoriesModel
+@{
+	var db = new thisDb();
+}
+
+<h1>Ingredient Categories</h1>
+<hr />
+<a asp-area="administration" asp-page="/addIngredientCategory">Add</a>
+
+<table class="table">
+	<tr>
+		<th>ID</th>
+		<th>Name</th>
+		<th>Edit</th>
+		<th>Delete</th>
+	</tr>
+	@foreach (IngredientCategory item in db.IngredientCategory.ToList())
+	{
+		bool isThisICUsed = (from x in db.Ingredient
+					where x.IngredientCategoryId == item.Id
+					select x).Any();
+
+		<tr>
+			<td>@item.Id</td>
+			<td>@item.Name</td>
+			<td>@Html.ActionLink("Edit", "Edit", "IngredientCategory", new {id=item.Id}, null)</td>
+			<td>
+				@if (isThisICUsed == false)
+				{
+					<form method="post">
+						<input type="hidden" value="@item.Id" name="icid" />
+						<button asp-page-handler="delete" type="submit" class="btn btn-danger">Delete</button>
+					</form>
+				}
+			</td>
+		</tr>
+	}
+</table>
+
+<p>*Cannot delete Ingredient Categories that are in use by an Ingredient.</p>

@@ -1,0 +1,46 @@
+﻿@page
+@using RecipeKeeper.Data.Models;
+@using System.Data;
+@model RecipeKeeper.Areas.Administration.Pages.IngredientsModel
+@{
+	var db = new thisDb();
+}
+<h1>Ingredients</h1>
+<hr />
+
+<a asp-area="administration" asp-page="/addIngredient">Add</a>
+
+<table class="table">
+	<tr>
+		<th>ID</th>
+		<th>Name</th>
+		<th>Description</th>
+		<th>Category</th>
+		<th>Vegetarian</th>
+		<th>Vegan</th>
+		<th>Delete</th>
+	</tr>
+
+	@foreach (Ingredient i in db.Ingredient.ToList())
+	{
+		bool IsUsed = (from a in db.Recipe_Ingredient
+					where a.IngredientId == i.Id
+					select a).Any();
+
+		<tr>
+			<td>@i.Id</td>
+			<td>@i.Name</td>
+			<td>@i.Description</td>
+			<td>@i.IngredientCategoryId</td>
+			<td>@i.Vegetarian</td>
+			<td>@i.Vegan</td>
+			<td>
+				@if (IsUsed == false)
+				{
+					@Html.ActionLink("Delete", "Delete", "Ingredient", new {id=i.Id}, null)
+				}
+			</td>
+		</tr>
+	}
+</table>
+<p>*Cannot delete Ingredients that are in use by an Ingredient.</p>

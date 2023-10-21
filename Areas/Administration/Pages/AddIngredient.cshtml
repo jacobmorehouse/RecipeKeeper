@@ -1,0 +1,52 @@
+﻿@page
+@using RecipeKeeper.Data.Models
+@model RecipeKeeper.Areas.Administration.Pages.AddIngredientModel
+@{
+	var db = new thisDb();
+}
+
+<h1>Ingredient - Add</h1>
+<hr />
+<div class="row">
+	<div class="col-md-6">
+		<form method="post" class="add-edit-form">
+			<div asp-validation-summary="All"></div>
+			<div class="mb-3">
+				<label class="form-label">Name</label>
+				<input type="text" asp-for="newIngredient.Name" class="form-control" />
+				<span asp-validation-for="newIngredient.Name"></span>
+			</div>
+
+			<div class="mb-3">
+				<label class="form-label">Description</label>
+				<input type="text" asp-for="newIngredient.Description" class="form-control" />
+				<span asp-validation-for="newIngredient.Description"></span>
+			</div>
+
+			<div class="mb-3">
+				<label class="form-label">Category</label>
+				<select class="form-select" asp-for="newIngredient.IngredientCategoryId">
+					<option value=""></option>
+					@foreach (var n in db.IngredientCategory.ToList())
+					{
+						<option value="@n.Id">@n.Name</option>
+					}
+				</select>
+			</div>
+
+			<div class="mb-3">
+				<label class="form-label">Vegetarian</label>
+				<input type="checkbox" asp-for="newIngredient.Vegetarian" class="form-check-input" />
+				<span asp-validation-for="newIngredient.Vegetarian"></span>
+			</div>
+
+			<div class="mb-3">
+				<label class="form-label">Vegan</label>
+				<input type="checkbox" asp-for="newIngredient.Vegan" class="form-check-input" />
+				<span asp-validation-for="newIngredient.Vegan"></span>
+			</div>
+
+			<button type="submit" class="btn btn-success">Save</button>
+		</form>
+	</div>
+</div>
