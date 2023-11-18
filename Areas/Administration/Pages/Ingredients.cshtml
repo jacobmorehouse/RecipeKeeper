@@ -37,7 +37,10 @@
 			<td>
 				@if (IsUsed == false)
 				{
-					@Html.ActionLink("Delete", "Delete", "Ingredient", new {id=i.Id}, null)
+					<form method="post">
+						<input type="hidden" value="@i.Id" name="ingredientId" />
+						<button asp-page-handler="delete" type="submit" class="btn btn-danger">Delete</button>
+					</form>
 				}
 			</td>
 		</tr>

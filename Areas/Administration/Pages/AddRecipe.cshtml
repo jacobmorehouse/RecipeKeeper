@@ -1,0 +1,117 @@
+﻿@page
+@using RecipeKeeper.Data.Models
+@model RecipeKeeper.Areas.Administration.Pages.AddRecipeModel
+@{
+
+	var db = new thisDb();
+
+}
+
+
+
+<h1>Recipes - Add</h1>
+<hr />
+<div class="row">
+	<div class="col-md-6">
+		<form method="post" class="add-edit-form">
+			<input type="hidden" name="ingredientCount" id="ingredientCount" value="0" />
+
+			<div asp-validation-summary="All"></div>
+			<div class="mb-3">
+				<label class="form-label">Name</label>
+				<input type="text" asp-for="newRecipe.Name" class="form-control" />
+				<span asp-validation-for="newRecipe.Name"></span>
+			</div>
+
+			<div class="mb-3">
+				<label class="form-label">Description</label>
+				@* <input type="text" asp-for="newRecipe.Description" class="form-control" /> *@
+				<textarea asp-for="newRecipe.Description" class="form-control">
+
+				</textarea>
+				<span asp-validation-for="newRecipe.Description"></span>
+			</div>
+
+
+			<hr>
+
+
+			<div id="ingredientCardRegion">
+			</div>
+
+			<br>
+
+			<button type="button" class="btn btn-primary" onclick="addIngredientCard();">Add Ingredient</button>
+
+
+			<br>
+			<hr>
+			<br>
+			<br>
+			<br>
+
+			<button type="submit" class="btn btn-success">Save Recipe</button>
+
+		</form>
+	</div>
+</div>
+<script>
+	function addIngredientCard() {
+		var ingredientRowUniqueId = 0;
+		var ingredientCount_el = document.getElementById("ingredientCount");
+		var thisIngredientId = (parseInt(ingredientCount_el.value) + 1);
+		var ingredientOptions = '<option value=""></option>';
+
+		@foreach (var i in db.Ingredient.ToList())
+		{
+			<text>ingredientOptions += '<option value="@i.Id">@i.Name</option>'; </text>
+		}
+
+		var uomOptions = '<option value=""></option>';
+		@foreach (var u in db.UOM.ToList())
+		{
+			<text>uomOptions += '<option value="@u.Id">@u.Name</option>'; </text>
+		}
+
+		var ingredientRowString = '' +
+			'<div id="ingredientCard' + thisIngredientId + '">' +
+			'	<div class="card" style="width: 18rem;" >' +
+			'		<div class="card-header">' +
+			'			Ingredient' +
+			'		</div>' +
+			'		<ul class="list-group list-group-flush">' +
+			'			<li class="list-group-item">' +
+			'				<select name="ingredientOption' + thisIngredientId + '" class="form-select" required="required">' +
+								ingredientOptions +
+			'				</select>' +
+			'			</li>' +
+			'			<li class="list-group-item">' +
+			'				<div class="input-group mb-3">' +
+			'					<input name="ingredientUnitValue' + thisIngredientId + '" type="number" class="form-control" placeholder="0" required="required">' +
+			'					<select name="ingredientUOM' + thisIngredientId + '" class="form-select" required="required">' +
+									uomOptions +
+			'					</select>' +
+			'				</div>' +
+			'			</li>' +
+			'		</ul>' +
+			'		<div class="card-body">' +
+			'			<button type="button" class="btn btn-danger" onclick="deleteIngredientCard(' + thisIngredientId + ')">Remove</button>' +
+			'		</div>' +
+			'	</div>' +
+			'	<br>' +
+			'</div>';
+
+
+		$('#ingredientCardRegion').append(ingredientRowString);
+		ingredientRowUniqueId = ingredientRowUniqueId + 1;
+		ingredientCount_el.value = parseInt(ingredientCount_el.value) + 1;
+
+		console.log('ingredientCount_el: ' + ingredientCount_el.value);
+	}
+
+
+	function deleteIngredientCard(icIDToDelete) { 
+		document.getElementById('ingredientCard' + icIDToDelete).remove();
+	}
+
+</script>
