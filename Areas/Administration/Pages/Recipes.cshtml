@@ -24,7 +24,12 @@
 			<td>@i.Id</td>
 			<td>@i.Name</td>
 			<td>@i.Description</td>
-			<td></td>
+			<td>
+				<form method="post">
+					<input type="hidden" value="@i.Id" name="recipeId" />
+					<button asp-page-handler="delete" type="submit" class="btn btn-danger">Delete</button>
+				</form>
+			</td>
 		</tr>
 	}
 </table>

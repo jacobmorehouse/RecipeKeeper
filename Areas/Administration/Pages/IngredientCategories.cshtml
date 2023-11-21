@@ -19,13 +19,15 @@
 	@foreach (IngredientCategory item in db.IngredientCategory.ToList())
 	{
 		bool isThisICUsed = (from x in db.Ingredient
-					where x.IngredientCategoryId == item.Id
-					select x).Any();
+							where x.IngredientCategoryId == item.Id
+							select x).Any();
 
 		<tr>
 			<td>@item.Id</td>
 			<td>@item.Name</td>
-			<td>@Html.ActionLink("Edit", "Edit", "IngredientCategory", new {id=item.Id}, null)</td>
+			<td>
+				<a href="/Administration/EditIngredientCategory/@item.Id" type="button" class="btn btn-info">Edit</a>
+			</td>
 			<td>
 				@if (isThisICUsed == false)
 				{
@@ -34,6 +36,9 @@
 						<button asp-page-handler="delete" type="submit" class="btn btn-danger">Delete</button>
 					</form>
 				}
+				@*
+				//TODO redo this form as a link 
+				*@
 			</td>
 		</tr>
 	}

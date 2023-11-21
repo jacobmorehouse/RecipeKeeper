@@ -10,7 +10,7 @@ namespace RecipeKeeper.Data.Models
 		public int RecipeId { get; set; }
 		public int IngredientId { get; set; }
 		public int DisplayOrder { get; set; }
-		public int UONId { get; set; }
-		public double Quantity { get; set; }
+		public int UOMId { get; set; }
+		public decimal Quantity { get; set; }
 	}
 }

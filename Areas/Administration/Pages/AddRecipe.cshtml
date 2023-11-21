@@ -19,14 +19,14 @@
 			<div asp-validation-summary="All"></div>
 			<div class="mb-3">
 				<label class="form-label">Name</label>
-				<input type="text" asp-for="newRecipe.Name" class="form-control" />
+				<input type="text" asp-for="newRecipe.Name" required="required" class="form-control" />
 				<span asp-validation-for="newRecipe.Name"></span>
 			</div>
 
 			<div class="mb-3">
 				<label class="form-label">Description</label>
 				@* <input type="text" asp-for="newRecipe.Description" class="form-control" /> *@
-				<textarea asp-for="newRecipe.Description" class="form-control">
+				<textarea asp-for="newRecipe.Description" required="required" class="form-control">
 
 				</textarea>
 				<span asp-validation-for="newRecipe.Description"></span>
