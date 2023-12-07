@@ -7,14 +7,13 @@
 
 }
 
-
-
 <h1>Recipes - Add</h1>
 <hr />
 <div class="row">
 	<div class="col-md-6">
 		<form method="post" class="add-edit-form">
 			<input type="hidden" name="ingredientCount" id="ingredientCount" value="0" />
+			<input type="hidden" name="relatedRecipeCount" id="relatedRecipeCount" value="0" />
 
 			<div asp-validation-summary="All"></div>
 			<div class="mb-3">
@@ -47,7 +46,20 @@
 			<br>
 			<hr>
 			<br>
+
+			<textarea id="Details"  asp-for="newRecipe.Detail">
+			</textarea>
+
 			<br>
+			<hr>
+			<br>
+
+			<div id="relatedRecipesRegion"></div>
+			<br />
+			<button type="button" class="btn btn-primary" onclick="addRelatedRecipeCard();">Add Related Recipes</button>
+
+			<br>
+			<hr>
 			<br>
 
 			<button type="submit" class="btn btn-success">Save Recipe</button>
@@ -56,6 +68,45 @@
 	</div>
 </div>
 <script>
+
+	function addRelatedRecipeCard() { 
+		var recipeOptions = '<option value=""></option>';
+		var relatedReciptCount_el = document.getElementById("relatedRecipeCount");
+		var thisRelatedRecipeId = (parseInt(relatedReciptCount_el.value) + 1);
+		//var RecipeRowUniqueId = 0;
+
+		var someIdTODO = 1;
+
+		@foreach (var r in db.Recipe.ToList())
+		{
+			<text>recipeOptions += '<option value="@r.Id">@r.Name</option>'; </text>
+		}
+
+
+		var recipeRowString = '' +
+			'<div id="recipeCard' + thisRelatedRecipeId + '">' +
+			'	<div class="card" style="width: 18rem;" >' +
+			'		<div class="card-header">' +
+			'			Related Recipe ' + thisRelatedRecipeId +
+			'		</div>' +
+			'		<ul class="list-group list-group-flush">' +
+			'			<li class="list-group-item">' +
+			'				<select name="relatedRecipeOption' + thisRelatedRecipeId + '" class="form-select" required="required">' +
+			recipeOptions +
+			'				</select>' +
+			'			</li>' +
+			'		<div class="card-body">' +
+			'			<button type="button" class="btn btn-danger" onclick="deleteRecipeCard(' + thisRelatedRecipeId + ')">Remove</button>' +
+			'		</div>' +
+			'	</div>' +
+			'	<br>' +
+			'</div>';
+
+		$("#relatedRecipesRegion").append(recipeRowString);
+
+		relatedReciptCount_el.value = parseInt(relatedReciptCount_el.value) + 1;
+	}
+
 	function addIngredientCard() {
 		var ingredientRowUniqueId = 0;
 		var ingredientCount_el = document.getElementById("ingredientCount");
@@ -106,12 +157,12 @@
 		ingredientRowUniqueId = ingredientRowUniqueId + 1;
 		ingredientCount_el.value = parseInt(ingredientCount_el.value) + 1;
 
-		console.log('ingredientCount_el: ' + ingredientCount_el.value);
 	}
 
 
 	function deleteIngredientCard(icIDToDelete) { 
 		document.getElementById('ingredientCard' + icIDToDelete).remove();
 	}
+
 
 </script>

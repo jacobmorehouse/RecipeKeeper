@@ -17,8 +17,6 @@ namespace RecipeKeeper.Areas.Administration.Pages
 
         public void OnGet()
         {
-			//var db = new thisDb();
-			//IngredientOptions = new SelectList(db.Ingredient.ToList(), nameof(Ingredient.Id), nameof(Ingredient.Name));
 		}
 
         public IActionResult OnPost() { 
