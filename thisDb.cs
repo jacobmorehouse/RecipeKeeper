@@ -10,6 +10,7 @@ namespace RecipeKeeper
 		public DbSet<Recipe_Ingredient> Recipe_Ingredient { get; set; }
 		public DbSet<Recipe> Recipe { get; set; }
 		public DbSet<UOM> UOM { get; set; }
+		public DbSet<RelatedRecipe> RelatedRecipe { get; set; }
 
 
 		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

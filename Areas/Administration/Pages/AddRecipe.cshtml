@@ -87,7 +87,7 @@
 			'<div id="recipeCard' + thisRelatedRecipeId + '">' +
 			'	<div class="card" style="width: 18rem;" >' +
 			'		<div class="card-header">' +
-			'			Related Recipe ' + thisRelatedRecipeId +
+			'			Related Recipe ' +
 			'		</div>' +
 			'		<ul class="list-group list-group-flush">' +
 			'			<li class="list-group-item">' +
@@ -158,6 +158,11 @@
 		ingredientCount_el.value = parseInt(ingredientCount_el.value) + 1;
 
 	}
+
+	function deleteRecipeCard(rrIDToDelete) { 
+		document.getElementById('recipeCard' + rrIDToDelete).remove();
+	}
+
 
 
 	function deleteIngredientCard(icIDToDelete) { 
