@@ -5,8 +5,8 @@
 		public int Id { get; set; }
 		public string Name { get; set; } = "";
 		public string Description { get; set; } = "";
-		public IList<Recipe_Ingredient> Ingredients { get; set; }
+		public IList<Recipe_Ingredient> Ingredients { get; set; } = new List<Recipe_Ingredient>();
 		public string Detail { get; set; } = "";
-		public IList<RelatedRecipe> RelatedRecipes { get; set; }
+		public IList<RelatedRecipe> RelatedRecipes { get; set; } = new List<RelatedRecipe>();
 	}
 }

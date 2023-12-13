@@ -5,15 +5,14 @@
 	var db = new thisDb();
 
 	int startingIngredientCount = Model.thisRecipe.Ingredients.Count;
-	int startingRelatedRecipeCount = Model.thisRecipe.Ingredients.Count;
-
-	
+	int startingRelatedRecipeCount = Model.thisRecipe.RelatedRecipes.Count;
 }
 <h1>Recipes - Edit</h1>
 <hr />
 <div class="row">
 	<div class="col-md-6">
 		<form method="post" class="add-edit-form">
+			<input type="hidden" asp-for="thisRecipe.Id" />
 			<input type="hidden" name="ingredientCount" id="ingredientCount" value="@startingIngredientCount" />
 			<input type="hidden" name="relatedRecipeCount" id="relatedRecipeCount" value="@startingRelatedRecipeCount" />
 
@@ -32,12 +31,9 @@
 				<span asp-validation-for="thisRecipe.Description"></span>
 			</div>
 
-
 			<hr>
 
-
 			<div id="ingredientCardRegion">
-
 				@{
 					int ingredientCounter = 0;
 					foreach (var i in Model.thisRecipe.Ingredients)
@@ -66,13 +62,17 @@
 									</li>
 									<li class="list-group-item">
 										<div class="input-group mb-3">
-											<input name="ingredientUnitValue@(ingredientCounter)" type="number" class="form-control" placeholder="0" required="required">
+											<input name="ingredientUnitValue@(ingredientCounter)" type="number" class="form-control" placeholder="0" value="@i.Quantity" required="required">
 											<select name="ingredientUOM@(ingredientCounter)" class="form-select" required="required">
 												@foreach (var uo in db.UOM.ToList())
 												{
-													
+													string selected = "";
+													if (uo.Id == i.UOMId)
+													{
+														selected = "selected='selected'";
+													}
+													<!option value="@uo.Id" @selected>@uo.Name</!option>
 												}
-												uomOptions +
 											</select>
 										</div>
 									</li>
@@ -104,7 +104,44 @@
 			<hr>
 			<br>
 
-			<div id="relatedRecipesRegion"></div>
+			<div id="relatedRecipesRegion">
+
+				@{
+					int relatedRecipeCounter = 0;
+					foreach (var rr in Model.thisRecipe.RelatedRecipes)
+					{
+						relatedRecipeCounter++;
+						<div id="recipeCard@(relatedRecipeCounter)">
+							<div class="card" style="width: 18rem;">
+								<div class="card-header">
+									Related Recipe
+								</div>
+								<ul class="list-group list-group-flush">
+									<li class="list-group-item">
+										<select name="relatedRecipeOption@(relatedRecipeCounter)" class="form-select" required="required">
+											@foreach (var r in db.Recipe.ToList())
+											{
+												string selected = "";
+												if (r.Id == rr.relatedRecipeId)
+												{
+													selected = "selected='selected'";
+												}
+												<!option value="@r.Id" @selected>@r.Name</!option>
+											}
+										</select>
+									</li>
+								</ul>
+								<div class="card-body">
+									<button type="button" class="btn btn-danger" onclick="deleteRecipeCard(@(relatedRecipeCounter))">Remove</button>
+								</div>
+							</div>
+						</div>
+						<br>
+					}
+				}
+			</div>
+
+
 			<br />
 			<button type="button" class="btn btn-primary" onclick="addRelatedRecipeCard();">Add Related Recipes</button>
 
@@ -127,13 +164,12 @@
 
 		var someIdTODO = 1;
 
-	@foreach (var r in db.Recipe.ToList())
-	{
-		<text>recipeOptions += '<option value="@r.Id">@r.Name</option>'; </text>
-	}
+		@foreach (var r in db.Recipe.ToList())
+		{
+			<text>recipeOptions += '<option value="@r.Id">@r.Name</option>'; </text>
+		}
 
-
-			var recipeRowString = '' +
+		var recipeRowString = '' +
 			'<div id="recipeCard' + thisRelatedRecipeId + '">' +
 			'	<div class="card" style="width: 18rem;" >' +
 			'		<div class="card-header">' +
@@ -163,18 +199,18 @@
 		var thisIngredientId = (parseInt(ingredientCount_el.value) + 1);
 		var ingredientOptions = '<option value=""></option>';
 
-	@foreach (var i in db.Ingredient.ToList())
-	{
-		<text>ingredientOptions += '<option value="@i.Id">@i.Name</option>'; </text>
-	}
+		@foreach (var i in db.Ingredient.ToList())
+		{
+			<text>ingredientOptions += '<option value="@i.Id">@i.Name</option>'; </text>
+		}
 
-			var uomOptions = '<option value=""></option>';
-	@foreach (var u in db.UOM.ToList())
-	{
-		<text>uomOptions += '<option value="@u.Id">@u.Name</option>'; </text>
-	}
+				var uomOptions = '<option value=""></option>';
+		@foreach (var u in db.UOM.ToList())
+		{
+			<text>uomOptions += '<option value="@u.Id">@u.Name</option>'; </text>
+		}
 
-			var ingredientRowString = '' +
+		var ingredientRowString = '' +
 			'<div id="ingredientCard' + thisIngredientId + '">' +
 			'	<div class="card" style="width: 18rem;" >' +
 			'		<div class="card-header">' +
