@@ -6,8 +6,6 @@ namespace RecipeKeeper.Areas.Administration.Pages
 {
 	public class EditIngredientCategoryModel : PageModel
 	{
-		//public List<IngredientCategory> thisCategory = new List<IngredientCategory>(); // used to pass the category for Get and Delete. If not found, count will be 0.
-		//public IngredientCategory thisCategory = new IngredientCategory();
 
 		[BindProperty]
 		public IngredientCategory thisCategory { get; set; }
