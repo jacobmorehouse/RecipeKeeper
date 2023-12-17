@@ -31,6 +31,21 @@
 				<span asp-validation-for="thisRecipe.Description"></span>
 			</div>
 
+			<div class="mb-3">
+				<label class="form-label">Category</label>
+				<select name="RecipeCategory" class="form-select" required="required">
+					@foreach (var rc in db.RecipeCategory)
+					{
+						string selected = "";
+						if (rc.Id == Model.thisRecipe.RecipeCategory.Id)
+						{
+							selected = "selected='selected'";
+						}
+						<!option value="@rc.Id" @selected >@rc.Name</!option>
+					}
+				</select>
+			</div>
+
 			<hr>
 
 			<div id="ingredientCardRegion">

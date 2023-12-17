@@ -16,7 +16,8 @@ namespace RecipeKeeper.Areas.Administration.Pages
         {
 		}
 
-        public IActionResult OnPost() { 
+        public IActionResult OnPost() {
+			//todo if recipe not valid we need to take some appropriate action. JS it!
             if (ModelState.IsValid) {
                 var db = new thisDb();
 				int displayOrder = 0;
@@ -46,14 +47,18 @@ namespace RecipeKeeper.Areas.Administration.Pages
 					//todo here if it is already in the list, don't add it again. 
 					
 					newRecipe.RelatedRecipes.Add(thisRR);
-
 				}
+
+				var rcId = int.Parse(Request.Form.Where(k => k.Key.StartsWith("RecipeCategory")).ToList().FirstOrDefault().Value);
+				RecipeCategory thisRecipeCategory = (from rc in db.RecipeCategory
+													where rc.Id == rcId
+													 select rc).FirstOrDefault();
+
+				newRecipe.RecipeCategory = thisRecipeCategory;
 
 
 				db.Recipe.Add(newRecipe);
                 db.SaveChanges();
-				
-
 			}
 			return RedirectToPage("Recipes");
 		}

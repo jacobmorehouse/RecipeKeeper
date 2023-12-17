@@ -13,7 +13,7 @@ namespace RecipeKeeper.Areas.Administration.Pages
 		public void OnGet(int RecipeId)
 		{
 			var db = new thisDb();
-			Recipe rec = (	from r in db.Recipe.Include(r => r.Ingredients).Include(r => r.RelatedRecipes)
+			Recipe rec = (	from r in db.Recipe.Include(r => r.Ingredients).Include(r => r.RelatedRecipes).Include(r => r.RecipeCategory)
 							where r.Id == RecipeId
 							select r).FirstOrDefault();
 
@@ -81,6 +81,16 @@ namespace RecipeKeeper.Areas.Administration.Pages
 			theRecipeWeAreEditing.Detail = thisRecipe.Detail;
 			theRecipeWeAreEditing.Ingredients = thisRecipe.Ingredients;
 			theRecipeWeAreEditing.RelatedRecipes = thisRecipe.RelatedRecipes;
+
+
+			//recipe category...
+			var rcId = int.Parse(Request.Form.Where(k => k.Key.StartsWith("RecipeCategory")).ToList().FirstOrDefault().Value);
+			RecipeCategory thisRecipeCategory = (from rc in db.RecipeCategory
+												 where rc.Id == rcId
+												 select rc).FirstOrDefault();
+
+			theRecipeWeAreEditing.RecipeCategory = thisRecipeCategory;
+
 
 			db.SaveChanges();
 
