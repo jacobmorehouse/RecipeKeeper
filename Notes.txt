@@ -1,0 +1,2 @@
+﻿For infromation on how I edited the Login page, and how to edit other identity (or otherwise hidden) pages, see: https://bluerhinolabs.medium.com/customize-login-page-on-asp-net-core-web-application-73cc9574da32
+

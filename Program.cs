@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RecipeKeeper.Data;
@@ -11,8 +12,24 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
 builder.Services.AddRazorPages();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+    .RequireAuthenticatedUser()
+    .Build();
+});
+
+//For more about authorization: https://learn.microsoft.com/en-us/aspnet/core/security/authorization/razor-pages-authorization?view=aspnetcore-8.0#allow-anonymous-access-to-a-page
+builder.Services.AddRazorPages(options => {
+    options.Conventions.AllowAnonymousToPage("/Index");
+    //options.Conventions.AllowAnonymousToPage("/Areas/Identity/Pages/Account/Login"); //didnt work
+    options.Conventions.AllowAnonymousToAreaFolder("Identity", "/Account");
+});
 
 var app = builder.Build();
 
