@@ -2,24 +2,40 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using RecipeKeeper.Data.Models;
+using System.Security.Claims;
 
 namespace RecipeKeeper.Areas.Administration.Pages
 {
-    public class AddRecipeModel : PageModel
-    {
+	public class AddRecipeModel : PageModel
+	{
 
 		[BindProperty]
-		public Recipe newRecipe { get; set; }
+		public string name { get; set; }
+
+		[BindProperty]
+		public string description { get; set; }
+
+		[BindProperty]
+		public int recipeCategory { get; set; }
+
+		[BindProperty]
+		public string detail { get; set; }
 
 
-        public void OnGet()
-        {
+
+		public void OnGet()
+		{
 		}
 
-        public IActionResult OnPost() {
-			//todo if recipe not valid we need to take some appropriate action. JS it!
-            if (ModelState.IsValid) {
-                var db = new thisDb();
+		public IActionResult OnPost() {
+			if (ModelState.IsValid) {
+
+				Recipe newRecipe = new Recipe();
+				newRecipe.Name = name;
+				newRecipe.Description = description;
+				newRecipe.Detail = detail;
+
+				var db = new thisDb();
 				int displayOrder = 0;
 
 
@@ -44,23 +60,24 @@ namespace RecipeKeeper.Areas.Administration.Pages
 					int rrNumber = int.Parse(relatedRecipe.Key.Replace("relatedRecipeOption", ""));
 					RelatedRecipe thisRR = new RelatedRecipe() { relatedRecipeId = int.Parse(Request.Form["relatedRecipeOption" + rrNumber]) };
 					
-					//todo here if it is already in the list, don't add it again. 
+					//TODO here if it is already in the list, don't add it again. 
 					
 					newRecipe.RelatedRecipes.Add(thisRR);
 				}
 
-				var rcId = int.Parse(Request.Form.Where(k => k.Key.StartsWith("RecipeCategory")).ToList().FirstOrDefault().Value);
 				RecipeCategory thisRecipeCategory = (from rc in db.RecipeCategory
-													where rc.Id == rcId
+													where rc.Id == recipeCategory
 													 select rc).FirstOrDefault();
 
 				newRecipe.RecipeCategory = thisRecipeCategory;
 
+				newRecipe.AddedById = User.FindFirstValue(ClaimTypes.NameIdentifier);
+				newRecipe.AddedDateTimeUTC = DateTime.UtcNow;
 
 				db.Recipe.Add(newRecipe);
-                db.SaveChanges();
+				db.SaveChanges();
 			}
 			return RedirectToPage("Recipes");
 		}
-    }
+	}
 }

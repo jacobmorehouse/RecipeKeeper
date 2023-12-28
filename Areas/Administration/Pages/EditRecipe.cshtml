@@ -4,40 +4,43 @@
 @{
 	var db = new thisDb();
 
-	int startingIngredientCount = Model.thisRecipe.Ingredients.Count;
-	int startingRelatedRecipeCount = Model.thisRecipe.RelatedRecipes.Count;
+	Recipe thisRecipe = (Recipe) ViewData["thisRecipe"];
+
+	int startingIngredientCount = thisRecipe.Ingredients.Count;
+	int startingRelatedRecipeCount = thisRecipe.RelatedRecipes.Count;
 }
 <h1>Recipes - Edit</h1>
 <hr />
 <div class="row">
 	<div class="col-md-6">
 		<form method="post" class="add-edit-form">
-			<input type="hidden" asp-for="thisRecipe.Id" />
+			<input type="hidden" asp-for="Id" />
 			<input type="hidden" name="ingredientCount" id="ingredientCount" value="@startingIngredientCount" />
 			<input type="hidden" name="relatedRecipeCount" id="relatedRecipeCount" value="@startingRelatedRecipeCount" />
 
 			<div asp-validation-summary="All"></div>
 			<div class="mb-3">
 				<label class="form-label">Name</label>
-				<input type="text" asp-for="thisRecipe.Name" required="required" class="form-control" />
-				<span asp-validation-for="thisRecipe.Name"></span>
+				<input type="text" asp-for="name" required="required" class="form-control" />
+				<span asp-validation-for="name"></span>
 			</div>
 
 			<div class="mb-3">
 				<label class="form-label">Description</label>
-				<textarea asp-for="thisRecipe.Description" required="required" class="form-control">
+				<textarea asp-for="description" required="required" class="form-control">
 
 				</textarea>
-				<span asp-validation-for="thisRecipe.Description"></span>
+				<span asp-validation-for="description"></span>
 			</div>
 
+			
 			<div class="mb-3">
 				<label class="form-label">Category</label>
 				<select name="RecipeCategory" class="form-select" required="required">
 					@foreach (var rc in db.RecipeCategory)
 					{
 						string selected = "";
-						if (rc.Id == Model.thisRecipe.RecipeCategory.Id)
+						if (rc.Id == thisRecipe.RecipeCategory.Id)
 						{
 							selected = "selected='selected'";
 						}
@@ -45,13 +48,14 @@
 					}
 				</select>
 			</div>
+			
 
 			<hr>
 
 			<div id="ingredientCardRegion">
 				@{
 					int ingredientCounter = 0;
-					foreach (var i in Model.thisRecipe.Ingredients)
+					foreach (var i in thisRecipe.Ingredients)
 					{
 						ingredientCounter++;
 
@@ -112,7 +116,7 @@
 			<hr>
 			<br>
 
-			<textarea id="Details" asp-for="thisRecipe.Detail">
+			<textarea id="Details" asp-for="detail">
 			</textarea>
 
 			<br>
@@ -123,7 +127,7 @@
 
 				@{
 					int relatedRecipeCounter = 0;
-					foreach (var rr in Model.thisRecipe.RelatedRecipes)
+					foreach (var rr in thisRecipe.RelatedRecipes)
 					{
 						relatedRecipeCounter++;
 						<div id="recipeCard@(relatedRecipeCounter)">

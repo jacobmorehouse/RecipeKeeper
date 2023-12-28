@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using RecipeKeeper.Data.Models;
+using System.Security.Claims;
 
 namespace RecipeKeeper.Areas.Administration.Pages
 {
@@ -37,6 +38,9 @@ namespace RecipeKeeper.Areas.Administration.Pages
 				ingInDB.IngredientCategoryId = thisIngredient.IngredientCategoryId;
 				ingInDB.Vegetarian = thisIngredient.Vegetarian;
 				ingInDB.Vegan = thisIngredient.Vegan;
+
+				ingInDB.UpdatedById = User.FindFirstValue(ClaimTypes.NameIdentifier);
+				ingInDB.UpdatedDateUTC = DateTime.UtcNow;
 
 				db.SaveChanges();
 			}

@@ -23,5 +23,10 @@ namespace RecipeKeeper.Data.Models
 		public bool Vegan { get; set; } = false;
 		[Required]
 		public int IngredientCategoryId { get; set; }
+
+		public string? AddedById { get; set; }
+		public DateTime? AddedDateTimeUTC { get; set; }
+		public string? UpdatedById { get; set; }
+		public DateTime? UpdatedDateUTC { get; set; }
 	}
 }

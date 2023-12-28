@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 using RecipeKeeper.Data.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 
 namespace RecipeKeeper.Areas.Administration.Pages
 {
@@ -18,10 +20,12 @@ namespace RecipeKeeper.Areas.Administration.Pages
 		public IActionResult OnPost() {
 			if (ModelState.IsValid) {
 
+				newIngredientCategory.AddedById = User.FindFirstValue(ClaimTypes.NameIdentifier);
+				newIngredientCategory.AddedDateTimeUTC = DateTime.UtcNow;
+
 				var db = new thisDb();
 				db.IngredientCategory.Add(newIngredientCategory);
 				db.SaveChanges();
-
 
 				return RedirectToPage("IngredientCategories");
 			} else {

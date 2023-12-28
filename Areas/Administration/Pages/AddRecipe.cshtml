@@ -2,9 +2,7 @@
 @using RecipeKeeper.Data.Models
 @model RecipeKeeper.Areas.Administration.Pages.AddRecipeModel
 @{
-
 	var db = new thisDb();
-
 }
 
 <h1>Recipes - Add</h1>
@@ -18,28 +16,32 @@
 			<div asp-validation-summary="All"></div>
 			<div class="mb-3">
 				<label class="form-label">Name</label>
-				<input type="text" asp-for="newRecipe.Name" required="required" class="form-control" />
-				<span asp-validation-for="newRecipe.Name"></span>
+				<input type="text" asp-for="name" required="required" class="form-control" />
+				<span asp-validation-for="name"></span>
 			</div>
 
 			<div class="mb-3">
 				<label class="form-label">Description</label>
 				@* <input type="text" asp-for="newRecipe.Description" class="form-control" /> *@
-				<textarea asp-for="newRecipe.Description" required="required" class="form-control">
+				<textarea asp-for="description" required="required" class="form-control">
 
 				</textarea>
-				<span asp-validation-for="newRecipe.Description"></span>
+				<span asp-validation-for="description"></span>
 			</div>
 
+			
 			<div class="mb-3">
 				<label class="form-label">Category</label>
-				<select name="RecipeCategory" class="form-select" required="required">
+				<select asp-for="recipeCategory" class="form-select" required="required">
 					@foreach (var rc in db.RecipeCategory.ToList())
 					{
-						<option value="@rc.Id">@rc.Name</option>
+						<!option value="@rc.Id">@rc.Name</!option>
 					}
+
 				</select>
+				<span asp-validation-for="recipeCategory"></span>
 			</div>
+			
 
 			<hr>
 
@@ -55,7 +57,7 @@
 			<hr>
 			<br>
 
-			<textarea id="Details"  asp-for="newRecipe.Detail">
+			<textarea id="Details" asp-for="detail">
 			</textarea>
 
 			<br>
@@ -80,9 +82,6 @@
 		var recipeOptions = '<option value=""></option>';
 		var relatedReciptCount_el = document.getElementById("relatedRecipeCount");
 		var thisRelatedRecipeId = (parseInt(relatedReciptCount_el.value) + 1);
-		//var RecipeRowUniqueId = 0;
-
-		var someIdTODO = 1;
 
 		@foreach (var r in db.Recipe.ToList())
 		{
