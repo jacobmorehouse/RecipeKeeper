@@ -4,7 +4,7 @@
 // Write your JavaScript code.
 $(document).ready(function () {
 	tinymce.init({
-		selector: 'textarea#Details',  // change this value according to your HTML
+		selector: 'textarea.tinymce',  // change this value according to your HTML
 		promotion: false,
 		height: 300,
 		width: 700,

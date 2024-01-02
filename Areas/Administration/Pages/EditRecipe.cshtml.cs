@@ -21,7 +21,7 @@ namespace RecipeKeeper.Areas.Administration.Pages
 		public int recipeCategory { get; set; }
 
 		[BindProperty]
-		public string detail { get; set; }
+		public string? detail { get; set; }
 
 
 		public void OnGet(int RecipeId)
@@ -113,9 +113,10 @@ namespace RecipeKeeper.Areas.Administration.Pages
 				theRecipeWeAreEditing.UpdatedDateUTC = DateTime.UtcNow;
 
 				db.SaveChanges();
-			}
-
-			return RedirectToPage("Recipes");
+                return RedirectToPage("Recipes");
+            }
+			return Page();
+			
 		}
 	}
 }

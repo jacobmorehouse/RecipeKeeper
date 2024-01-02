@@ -13,7 +13,7 @@
 <hr />
 <div class="row">
 	<div class="col-md-6">
-		<form method="post" class="add-edit-form">
+		<form method="post">
 			<input type="hidden" asp-for="Id" />
 			<input type="hidden" name="ingredientCount" id="ingredientCount" value="@startingIngredientCount" />
 			<input type="hidden" name="relatedRecipeCount" id="relatedRecipeCount" value="@startingRelatedRecipeCount" />
@@ -116,7 +116,7 @@
 			<hr>
 			<br>
 
-			<textarea id="Details" asp-for="detail">
+			<textarea class="tinymce" asp-for="detail">
 			</textarea>
 
 			<br>

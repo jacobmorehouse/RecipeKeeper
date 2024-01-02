@@ -9,21 +9,20 @@
 <hr />
 <div class="row">
 	<div class="col-md-6">
-		<form method="post" class="add-edit-form">
+		<form method="post">
 			<input type="hidden" name="ingredientCount" id="ingredientCount" value="0" />
 			<input type="hidden" name="relatedRecipeCount" id="relatedRecipeCount" value="0" />
 
 			<div asp-validation-summary="All"></div>
 			<div class="mb-3">
 				<label class="form-label">Name</label>
-				<input type="text" asp-for="name" required="required" class="form-control" />
+				<input type="text" asp-for="name" class="form-control" />
 				<span asp-validation-for="name"></span>
 			</div>
 
 			<div class="mb-3">
 				<label class="form-label">Description</label>
-				@* <input type="text" asp-for="newRecipe.Description" class="form-control" /> *@
-				<textarea asp-for="description" required="required" class="form-control">
+				<textarea asp-for="description" class="form-control">
 
 				</textarea>
 				<span asp-validation-for="description"></span>
@@ -32,7 +31,7 @@
 			
 			<div class="mb-3">
 				<label class="form-label">Category</label>
-				<select asp-for="recipeCategory" class="form-select" required="required">
+				<select asp-for="recipeCategory" class="form-select">
 					@foreach (var rc in db.RecipeCategory.ToList())
 					{
 						<!option value="@rc.Id">@rc.Name</!option>
@@ -57,7 +56,7 @@
 			<hr>
 			<br>
 
-			<textarea id="Details" asp-for="detail">
+			<textarea class="tinymce" asp-for="detail">
 			</textarea>
 
 			<br>

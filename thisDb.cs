@@ -13,7 +13,7 @@ namespace RecipeKeeper
 		public DbSet<RelatedRecipe> RelatedRecipe { get; set; }
 		public DbSet<RecipeCategory> RecipeCategory { get; set; }
 
-		protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 		{
 			var builder = WebApplication.CreateBuilder();
 			IConfiguration configuration = builder.Configuration;

@@ -19,7 +19,7 @@ namespace RecipeKeeper.Areas.Administration.Pages
 		public int recipeCategory { get; set; }
 
 		[BindProperty]
-		public string detail { get; set; }
+		public string? detail { get; set; }
 
 
 
@@ -76,8 +76,9 @@ namespace RecipeKeeper.Areas.Administration.Pages
 
 				db.Recipe.Add(newRecipe);
 				db.SaveChanges();
-			}
-			return RedirectToPage("Recipes");
+                return RedirectToPage("Recipes");
+            }
+			return Page();
 		}
 	}
 }
