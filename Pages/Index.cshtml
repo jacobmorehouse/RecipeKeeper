@@ -1,5 +1,5 @@
 ﻿@page
-@using RecipeKeeper.Data.Models;
+@using RecipeKeeper.Data.Models
 @model IndexModel
 @{
 	ViewData["Title"] = "Home page";
@@ -39,7 +39,7 @@
 				<div class="col-md-6">
 					<div class="card" >
 						<div class="card-body">
-							<h5><a class="stretched-link" href="/Administration/ViewRecipe/@r.Id">@r.Name</a></h5>
+							<h5><a class="stretched-link" href="/ViewRecipe/@r.Id">@r.Name</a></h5>
 							<p class="card-text">@r.Description</p>
 						</div>
 					</div>

@@ -1,6 +1,6 @@
 ﻿@page "{RecipeId}"
 @using RecipeKeeper.Data.Models
-@model RecipeKeeper.Areas.Administration.Pages.ViewRecipeModel
+@model ViewRecipeModel
 @{
 	var db = new thisDb();
 
@@ -69,7 +69,7 @@
 													where z.Id == rr.Id
 													select z).FirstOrDefault();
 
-							<li><a href="/Administration/ViewRecipe/@thisRelatedRecipe.Id">@thisRelatedRecipe.Name</a></li>
+							<li><a href="/ViewRecipe/@thisRelatedRecipe.Id">@thisRelatedRecipe.Name</a></li>
 					}
 					</ul>
 				}
