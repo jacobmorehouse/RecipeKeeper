@@ -1,0 +1,81 @@
+﻿@page "{RecipeId}"
+@using RecipeKeeper.Data.Models
+@model RecipeKeeper.Areas.Administration.Pages.ViewRecipeModel
+@{
+	var db = new thisDb();
+
+	Recipe thisRecipe = (Recipe) ViewData["thisRecipe"];
+
+	List<Ingredient> IngredientList = db.Ingredient.ToList();
+}
+<h1>Recipes - View</h1>
+<hr />
+<div class="row">
+	<div class="col-md-6">
+
+		<div class="mb-3">
+			<h2>@thisRecipe.Name</h2>
+		</div>
+
+		<div class="mb-3">
+			<p>Description: @thisRecipe.Description</p>
+		</div>
+
+			
+		<div class="mb-3">
+			<p>Category: @thisRecipe.RecipeCategory.Name</p>
+		</div>
+			
+		<hr>
+
+
+		<div class="mb-3">
+			<p>Ingredients: </p>
+			<ul>
+			@foreach (Recipe_Ingredient ri in thisRecipe.Ingredients.ToList())
+			{
+				var thisIngredient = (from i in IngredientList
+									where ri.IngredientId == i.Id
+									select i).FirstOrDefault();
+
+					var thisUOM = (from unit in db.UOM
+											where unit.Id == ri.UOMId
+											select unit).FirstOrDefault();
+
+				<li>@thisIngredient.Name (@ri.Quantity @thisUOM.Shortname) </li>
+			}
+			</ul>
+		</div>
+
+		<br>
+		<hr>
+		<br>
+
+		<p>Details:</p>
+		@Html.Raw(thisRecipe.Detail)
+
+		<div>
+			@{
+				if (thisRecipe.RelatedRecipes.Count > 0)
+				{
+					<br>
+					<hr>
+					<br>
+					<p>Related Recipes:</p>
+					<ul>
+					@foreach (var rr in thisRecipe.RelatedRecipes)
+					{
+						Recipe thisRelatedRecipe = (from z in db.Recipe
+													where z.Id == rr.Id
+													select z).FirstOrDefault();
+
+							<li><a href="/Administration/ViewRecipe/@thisRelatedRecipe.Id">@thisRelatedRecipe.Name</a></li>
+					}
+					</ul>
+				}
+			}
+				
+		</div>
+
+	</div>
+</div>

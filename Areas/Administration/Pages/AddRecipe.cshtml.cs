@@ -76,8 +76,8 @@ namespace RecipeKeeper.Areas.Administration.Pages
 
 				db.Recipe.Add(newRecipe);
 				db.SaveChanges();
-                return RedirectToPage("Recipes");
-            }
+				return RedirectToPage("Recipes");
+			}
 			return Page();
 		}
 	}

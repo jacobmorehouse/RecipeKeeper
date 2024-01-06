@@ -113,8 +113,8 @@ namespace RecipeKeeper.Areas.Administration.Pages
 				theRecipeWeAreEditing.UpdatedDateUTC = DateTime.UtcNow;
 
 				db.SaveChanges();
-                return RedirectToPage("Recipes");
-            }
+				return RedirectToPage("Recipes");
+			}
 			return Page();
 			
 		}

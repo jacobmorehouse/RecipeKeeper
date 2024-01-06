@@ -35,12 +35,20 @@ namespace RecipeKeeper.Pages
 			List<Recipe> RecipesFilteredByType = new List<Recipe>();
 			List<Recipe> ReturnRecipes = new List<Recipe>();
 
+			int nullRecipeTypeId = (from rc in db.RecipeCategory
+								   where rc.Name.Equals("")
+								   select rc.Id).FirstOrDefault();
 
 			//if type was defined, filter for it.
-			if (AllRecipes.Count > 0 && recipeType != null) {
+			if (AllRecipes.Count > 0 && recipeType != null && recipeType != nullRecipeTypeId)
+			{
 				RecipesFilteredByType = (from r in AllRecipes
 										 where r.RecipeCategory.Id == recipeType
-						   select r).ToList();
+										 select r).ToList();
+			}
+			else {
+				//else we dont need to filter them...
+				RecipesFilteredByType = AllRecipes.ToList();
 			}
 
 
@@ -126,7 +134,6 @@ namespace RecipeKeeper.Pages
 			else {
 				ReturnRecipes.AddRange(RecipesFilteredByType);
 			}
-
 
 
 			ViewData["RecipeSearchResults"] = ReturnRecipes;
