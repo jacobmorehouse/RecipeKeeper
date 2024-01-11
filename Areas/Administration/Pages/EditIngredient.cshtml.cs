@@ -9,19 +9,24 @@ namespace RecipeKeeper.Areas.Administration.Pages
 	{
 		[BindProperty]
 		public Ingredient thisIngredient { get; set; }
+		public RKContext _db;
 
+		public EditIngredientModel(RKContext db) { 
+			_db = db;
+		}
 
-		public thisDb db = new thisDb();
 
 		public void OnGet(int IngredientID)
 		{
-			Ingredient ing = (from a in db.Ingredient
+			Ingredient ing = (from a in _db.Ingredient
 									  where a.Id == IngredientID
 									  select a).FirstOrDefault();
 
 			//TODO if IC not found, instead redirect the user to the ingredient menu page.
 
 			this.thisIngredient = ing;
+
+			ViewData["IngredientCategoryList"] = _db.IngredientCategory.ToList(); 
 		}
 
 
@@ -29,10 +34,9 @@ namespace RecipeKeeper.Areas.Administration.Pages
 			if (ModelState.IsValid)
 			{
 				//TODO if ID not found, do nothing and just go back to the Ingredient menu page. 
-				Ingredient ingInDB = (from ic in db.Ingredient
+				Ingredient ingInDB = (from ic in _db.Ingredient
 										where ic.Id == thisIngredient.Id
 										select ic).FirstOrDefault();
-
 
 				ingInDB.Name = thisIngredient.Name;
 				ingInDB.Description = thisIngredient.Description;
@@ -43,12 +47,10 @@ namespace RecipeKeeper.Areas.Administration.Pages
 				ingInDB.UpdatedById = User.FindFirstValue(ClaimTypes.NameIdentifier);
 				ingInDB.UpdatedDateUTC = DateTime.UtcNow;
 
-				db.SaveChanges();
+				_db.SaveChanges();
 			}
-
 
 			return RedirectToPage("Ingredients");
 		}
-
 	}
 }

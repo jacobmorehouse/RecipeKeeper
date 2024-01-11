@@ -9,24 +9,34 @@ namespace RecipeKeeper.Areas.Administration.Pages
 {
 	public class IngredientsModel : PageModel
 	{
-		public thisDb db = new thisDb();
+		//public thisDb db = new thisDb();
+
+		public RKContext _db;
+
+		public IngredientsModel(RKContext db)
+		{
+			_db = db;
+		}
 
 		public void OnGet()
 		{
+			ViewData["IngredientList"] = _db.Ingredient.ToList();
+			ViewData["IngredientIdsUsed"] = (from iu in _db.Recipe_Ingredient select iu.IngredientId).Distinct().ToList();
+
 		}
 
 		public IActionResult OnPostDelete()
 		{
 			var ingredientId = int.Parse(Request.Form["ingredientId"]);
 
-			var thisIngredient = (from i in db.Ingredient
+			var thisIngredient = (from i in _db.Ingredient
 								  where i.Id == ingredientId
 								  select i).FirstOrDefault();
 
 			if (thisIngredient != null)
 			{
-				db.Ingredient.Remove(thisIngredient);
-				db.SaveChanges();
+				_db.Ingredient.Remove(thisIngredient);
+				_db.SaveChanges();
 			}
 
 			return RedirectToPage("Ingredients");

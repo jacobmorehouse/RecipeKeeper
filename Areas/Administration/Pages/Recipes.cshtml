@@ -2,7 +2,6 @@
 @using RecipeKeeper.Data.Models;
 @model RecipeKeeper.Areas.Administration.Pages.RecipesModel
 @{
-	var db = new thisDb();
 }
 <h1>Recipe</h1>
 <hr />
@@ -17,7 +16,7 @@
 		<th></th>
 	</tr>
 
-	@foreach (Recipe i in db.Recipe.ToList())
+	@foreach (Recipe i in (List<Recipe>)ViewData["Recipes"])
 	{
 		<tr>
 			<td>@i.Id</td>

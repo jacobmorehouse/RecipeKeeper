@@ -9,11 +9,13 @@ namespace RecipeKeeper.Areas.Administration.Pages
 {
 	public class addIngredientCategoryModel : PageModel
 	{
-
 		[BindProperty]
 		public IngredientCategory newIngredientCategory { get; set; }
+		public RKContext _db;
 
-		public thisDb db = new thisDb();
+		public addIngredientCategoryModel(RKContext db) { 
+			_db = db;
+		}
 
 		public void OnGet()
 		{
@@ -25,8 +27,8 @@ namespace RecipeKeeper.Areas.Administration.Pages
 				newIngredientCategory.AddedById = User.FindFirstValue(ClaimTypes.NameIdentifier);
 				newIngredientCategory.AddedDateTimeUTC = DateTime.UtcNow;
 
-				db.IngredientCategory.Add(newIngredientCategory);
-				db.SaveChanges();
+				_db.IngredientCategory.Add(newIngredientCategory);
+				_db.SaveChanges();
 
 				return RedirectToPage("IngredientCategories");
 			} else {

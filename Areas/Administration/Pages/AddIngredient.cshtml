@@ -2,7 +2,6 @@
 @using RecipeKeeper.Data.Models
 @model RecipeKeeper.Areas.Administration.Pages.AddIngredientModel
 @{
-	var db = new thisDb();
 }
 
 <h1>Ingredient - Add</h1>
@@ -27,7 +26,7 @@
 				<label class="form-label">Category</label>
 				<select class="form-select" asp-for="newIngredient.IngredientCategoryId">
 					<option value=""></option>
-					@foreach (var n in db.IngredientCategory.ToList())
+					@foreach (var n in (List<IngredientCategory>)ViewData["IngredientCategoryList"])
 					{
 						<option value="@n.Id">@n.Name</option>
 					}

@@ -3,7 +3,7 @@
 @using System.Data;
 @model RecipeKeeper.Areas.Administration.Pages.IngredientsModel
 @{
-	var db = new thisDb();
+	//var db = new thisDb();
 }
 <h1>Ingredients</h1>
 <hr />
@@ -22,11 +22,11 @@
 		<th>Delete</th>
 	</tr>
 
-	@foreach (Ingredient i in db.Ingredient.ToList())
+	@foreach (Ingredient i in (List<Ingredient>)ViewData["IngredientList"])
 	{
-		bool IsUsed = (from a in db.Recipe_Ingredient
-					where a.IngredientId == i.Id
-					select a).Any();
+		bool IsUsed = (from iu in (List<int>)ViewData["IngredientIdsUsed"]
+					where iu == i.Id
+					select iu).Any();
 
 		<tr>
 			<td>@i.Id</td>

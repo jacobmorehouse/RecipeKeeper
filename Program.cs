@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-//builder.Services.AddDbContext<thisDb>(options => options.UseSqlServer(connectionString)); //was working on this tring to integrate it 20240110
+builder.Services.AddDbContext<RKContext>(options => options.UseSqlServer(connectionString)); //was working on this tring to integrate it 20240110
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -39,6 +39,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
 	app.UseMigrationsEndPoint();
+	app.UseDeveloperExceptionPage();
 }
 else
 {

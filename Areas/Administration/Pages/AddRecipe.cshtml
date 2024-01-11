@@ -2,7 +2,6 @@
 @using RecipeKeeper.Data.Models
 @model RecipeKeeper.Areas.Administration.Pages.AddRecipeModel
 @{
-	var db = new thisDb();
 }
 
 <h1>Recipes - Add</h1>
@@ -32,7 +31,7 @@
 			<div class="mb-3">
 				<label class="form-label">Category</label>
 				<select asp-for="recipeCategory" class="form-select">
-					@foreach (var rc in db.RecipeCategory.ToList())
+					@foreach (var rc in (List<RecipeCategory>)ViewData["RecipeCategoryList"])
 					{
 						<!option value="@rc.Id">@rc.Name</!option>
 					}
@@ -82,7 +81,7 @@
 		var relatedReciptCount_el = document.getElementById("relatedRecipeCount");
 		var thisRelatedRecipeId = (parseInt(relatedReciptCount_el.value) + 1);
 
-		@foreach (var r in db.Recipe.ToList())
+		@foreach (var r in (List<Recipe>)ViewData["RecipeList"])
 		{
 			<text>recipeOptions += '<option value="@r.Id">@r.Name</option>'; </text>
 		}
@@ -118,13 +117,13 @@
 		var thisIngredientId = (parseInt(ingredientCount_el.value) + 1);
 		var ingredientOptions = '<option value=""></option>';
 
-		@foreach (var i in db.Ingredient.ToList())
+		@foreach (var i in (List<Ingredient>)ViewData["IngredientList"])
 		{
 			<text>ingredientOptions += '<option value="@i.Id">@i.Name</option>'; </text>
 		}
 
 		var uomOptions = '<option value=""></option>';
-		@foreach (var u in db.UOM.ToList())
+		@foreach (var u in (List<UOM>)ViewData["UOMList"])
 		{
 			<text>uomOptions += '<option value="@u.Id">@u.Name</option>'; </text>
 		}

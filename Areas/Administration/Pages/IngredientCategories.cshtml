@@ -2,7 +2,6 @@
 @using RecipeKeeper.Data.Models;
 @model RecipeKeeper.Areas.Administration.Pages.IngredientCategoriesModel
 @{
-	var db = new thisDb();
 }
 
 <h1>Ingredient Categories</h1>
@@ -17,10 +16,10 @@
 		<th>Delete</th>
 	</tr>
 
-	@foreach (IngredientCategory item in db.IngredientCategory.ToList())
+	@foreach (IngredientCategory item in (List<IngredientCategory>)ViewData["IngredientCategoryList"])
 	{
-		bool isThisICUsed = (from x in db.Ingredient
-							where x.IngredientCategoryId == item.Id
+		bool isThisICUsed = (from x in (List<int>)ViewData["IngredientCategoryIDsInUse"]
+							where x == item.Id
 							select x).Any();
 
 		<tr>

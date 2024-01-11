@@ -16,26 +16,30 @@ namespace RecipeKeeper.Pages
 		[BindProperty]
 		public string? searchText { get; set; }
 
+		public RKContext _db;
 
 
-		public IndexModel(ILogger<IndexModel> logger)
+
+		public IndexModel(ILogger<IndexModel> logger, RKContext db)
 		{
 			_logger = logger;
+			_db = db;
 		}
 
 		public void OnGet()
 		{
+			ViewData["RecipeCategoryList"] = _db.RecipeCategory.ToList();
 		}
 
 		public IActionResult OnPost() {
-			var db = new thisDb();
-			List<Recipe> AllRecipes = (db.Recipe.Include(r => r.Ingredients).Include(r => r.RelatedRecipes).Include(r => r.RecipeCategory)).ToList();
+			//var db = new thisDb();
+			List<Recipe> AllRecipes = (_db.Recipe.Include(r => r.Ingredients).Include(r => r.RelatedRecipes).Include(r => r.RecipeCategory)).ToList();
 			List<Recipe> RecipesFilteredByName = new List<Recipe>();
 			List<Recipe> RecipesFilteredByIngredients = new List<Recipe>();
 			List<Recipe> RecipesFilteredByType = new List<Recipe>();
 			List<Recipe> ReturnRecipes = new List<Recipe>();
 
-			int nullRecipeTypeId = (from rc in db.RecipeCategory
+			int nullRecipeTypeId = (from rc in _db.RecipeCategory
 								   where rc.Name.Equals("")
 								   select rc.Id).FirstOrDefault();
 
@@ -64,7 +68,7 @@ namespace RecipeKeeper.Pages
 			if (RecipesFilteredByType.Count > 0 && searchText != null && searchText.Length > 0) {
 
 				//ingredients we should be looking out for: 
-				var matchingIngredients = (from i in db.Ingredient
+				var matchingIngredients = (from i in _db.Ingredient
 										   where i.Name.ToLower().Contains(searchText.ToLower())
 										   select i.Id).ToList();
 
@@ -137,6 +141,7 @@ namespace RecipeKeeper.Pages
 
 
 			ViewData["RecipeSearchResults"] = ReturnRecipes;
+			ViewData["RecipeCategoryList"] = _db.RecipeCategory.ToList();
 			return Page();
 		}
 	}

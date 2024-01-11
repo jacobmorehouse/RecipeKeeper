@@ -5,19 +5,24 @@ using RecipeKeeper.Data.Models;
 
 namespace RecipeKeeper.Pages
 {
-    public class ViewRecipeModel : PageModel
-    {
-        public void OnGet(int RecipeId)
-        {
-            var db = new thisDb();
-            Recipe rec = (from r in db.Recipe.Include(r => r.Ingredients).Include(r => r.RelatedRecipes).Include(r => r.RecipeCategory)
-                          where r.Id == RecipeId
-                          select r).FirstOrDefault();
+	public class ViewRecipeModel : PageModel
+	{
+		public RKContext _db;
 
-            ViewData["thisRecipe"] = rec;
+		public ViewRecipeModel(RKContext db) { 
+			_db = db;
+		}
 
-            List<Ingredient> IngredientList = new List<Ingredient>();
+		public void OnGet(int RecipeId)
+		{
+			Recipe rec = (from r in _db.Recipe.Include(r => r.Ingredients).Include(r => r.RelatedRecipes).Include(r => r.RecipeCategory)
+						  where r.Id == RecipeId
+						  select r).FirstOrDefault();
 
-        }
-    }
+			ViewData["thisRecipe"] = rec;
+			ViewData["IngredientList"] = _db.Ingredient.ToList();
+			ViewData["UOMList"] = _db.UOM.ToList();
+			ViewData["RecipeList"] = _db.Recipe.ToList();
+		}
+	}
 }

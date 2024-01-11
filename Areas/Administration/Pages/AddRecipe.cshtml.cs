@@ -21,10 +21,18 @@ namespace RecipeKeeper.Areas.Administration.Pages
 		[BindProperty]
 		public string? detail { get; set; }
 
-		public thisDb db = new thisDb();
+		public RKContext _db;
+
+		public AddRecipeModel(RKContext db) { 
+			_db = db;
+		}
 
 		public void OnGet()
 		{
+			ViewData["RecipeCategoryList"] = _db.RecipeCategory.ToList();
+			ViewData["IngredientList"] = _db.Ingredient.ToList();
+			ViewData["UOMList"] = _db.UOM.ToList();
+			ViewData["RecipeList"] = _db.Recipe.ToList();
 		}
 
 		public IActionResult OnPost() {
@@ -62,7 +70,7 @@ namespace RecipeKeeper.Areas.Administration.Pages
 					newRecipe.RelatedRecipes.Add(thisRR);
 				}
 
-				RecipeCategory thisRecipeCategory = (from rc in db.RecipeCategory
+				RecipeCategory thisRecipeCategory = (from rc in _db.RecipeCategory
 													where rc.Id == recipeCategory
 													 select rc).FirstOrDefault();
 
@@ -71,8 +79,8 @@ namespace RecipeKeeper.Areas.Administration.Pages
 				newRecipe.AddedById = User.FindFirstValue(ClaimTypes.NameIdentifier);
 				newRecipe.AddedDateTimeUTC = DateTime.UtcNow;
 
-				db.Recipe.Add(newRecipe);
-				db.SaveChanges();
+				_db.Recipe.Add(newRecipe);
+				_db.SaveChanges();
 				return RedirectToPage("Recipes");
 			}
 			return Page();

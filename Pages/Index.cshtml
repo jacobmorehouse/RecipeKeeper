@@ -3,8 +3,6 @@
 @model IndexModel
 @{
 	ViewData["Title"] = "Home page";
-
-	var db = new thisDb();
 }
 
 <div class="text-center">
@@ -13,7 +11,7 @@
 		<form method="post">
 			<label for="recipeType">Type: </label>
 			<select asp-for="recipeType">
-				@foreach (var rt in db.RecipeCategory.ToList())
+				@foreach (var rt in (List<RecipeCategory>)ViewData["RecipeCategoryList"])
 				{
 					<option value="@rt.Id">@rt.Name</option>
 				}

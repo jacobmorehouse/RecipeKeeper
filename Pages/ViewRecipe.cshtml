@@ -2,11 +2,7 @@
 @using RecipeKeeper.Data.Models
 @model ViewRecipeModel
 @{
-	var db = new thisDb();
-
 	Recipe thisRecipe = (Recipe) ViewData["thisRecipe"];
-
-	List<Ingredient> IngredientList = db.Ingredient.ToList();
 }
 <h1>Recipes - View</h1>
 <hr />
@@ -21,24 +17,22 @@
 			<p>Description: @thisRecipe.Description</p>
 		</div>
 
-			
 		<div class="mb-3">
 			<p>Category: @thisRecipe.RecipeCategory.Name</p>
 		</div>
 			
 		<hr>
 
-
 		<div class="mb-3">
 			<p>Ingredients: </p>
 			<ul>
 			@foreach (Recipe_Ingredient ri in thisRecipe.Ingredients.ToList())
 			{
-				var thisIngredient = (from i in IngredientList
+					var thisIngredient = (from i in (List<Ingredient>)ViewData["IngredientList"]
 									where ri.IngredientId == i.Id
 									select i).FirstOrDefault();
 
-					var thisUOM = (from unit in db.UOM
+					var thisUOM = (from unit in (List<UOM>)ViewData["UOMList"]
 											where unit.Id == ri.UOMId
 											select unit).FirstOrDefault();
 
@@ -65,17 +59,16 @@
 					<ul>
 					@foreach (var rr in thisRecipe.RelatedRecipes)
 					{
-						Recipe thisRelatedRecipe = (from z in db.Recipe
+						Recipe thisRelatedRecipe = (from z in (List<Recipe>)ViewData["RecipeList"]
 													where z.Id == rr.Id
 													select z).FirstOrDefault();
 
-							<li><a href="/ViewRecipe/@thisRelatedRecipe.Id">@thisRelatedRecipe.Name</a></li>
+						<li><a href="/ViewRecipe/@thisRelatedRecipe.Id">@thisRelatedRecipe.Name</a></li>
 					}
 					</ul>
 				}
 			}
 				
 		</div>
-
 	</div>
 </div>

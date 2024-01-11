@@ -7,15 +7,18 @@ namespace RecipeKeeper.Areas.Administration.Pages
 {
 	public class EditIngredientCategoryModel : PageModel
 	{
-
 		[BindProperty]
 		public IngredientCategory thisCategory { get; set; }
+		public RKContext _db;
 
-		public thisDb db = new thisDb();
+
+		public EditIngredientCategoryModel(RKContext db) { 
+			_db = db;
+		}
 
 		public void OnGet(int IngredientCategoryID)
 		{
-			var IngredientCategory = (from a in db.IngredientCategory
+			var IngredientCategory = (from a in _db.IngredientCategory
 									where a.Id == IngredientCategoryID
 									select a).FirstOrDefault();
 									
@@ -28,7 +31,7 @@ namespace RecipeKeeper.Areas.Administration.Pages
 			if (ModelState.IsValid)
 			{
 				//TODO if ID not found, do nothing and just go back to the IC menu page. 
-				IngredientCategory icInDB = (from ic in db.IngredientCategory
+				IngredientCategory icInDB = (from ic in _db.IngredientCategory
 											 where ic.Id == thisCategory.Id
 											 select ic).FirstOrDefault();
 
@@ -36,7 +39,7 @@ namespace RecipeKeeper.Areas.Administration.Pages
 				icInDB.UpdatedDateUTC = DateTime.UtcNow;
 
 				icInDB.Name = thisCategory.Name;
-				db.SaveChanges();
+				_db.SaveChanges();
 
 			}
 			return RedirectToPage("IngredientCategories");

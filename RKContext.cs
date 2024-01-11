@@ -4,10 +4,11 @@ using RecipeKeeper.Data.Models;
 
 namespace RecipeKeeper
 {
-	public class thisDb : DbContext
+	public class RKContext : DbContext
 	{
-
-		public thisDb() { }
+		public RKContext(DbContextOptions<RKContext> options) : base(options)
+		{
+		}
 
 		public DbSet<Ingredient> Ingredient { get; set; }
 		public DbSet<IngredientCategory> IngredientCategory { get; set; }

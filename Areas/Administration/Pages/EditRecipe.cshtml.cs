@@ -23,19 +23,22 @@ namespace RecipeKeeper.Areas.Administration.Pages
 		[BindProperty]
 		public string? detail { get; set; }
 
+		public RKContext _db;
 
-		public thisDb db = new thisDb();
+		public EditRecipeModel(RKContext db) { 
+			_db = db;
+		}
 
 
 		public void OnGet(int RecipeId)
 		{
-			Recipe rec = (	from r in db.Recipe.Include(r => r.Ingredients).Include(r => r.RelatedRecipes).Include(r => r.RecipeCategory)
+			Recipe rec = (	from r in _db.Recipe.Include(r => r.Ingredients).Include(r => r.RelatedRecipes).Include(r => r.RecipeCategory)
 							where r.Id == RecipeId
 							select r).FirstOrDefault();
 
 			//TODO some logic here if rec is null...
 
-			var thisRecipeCategory = db.RecipeCategory.Where(x => x.Id == rec.RecipeCategory.Id).FirstOrDefault();
+			var thisRecipeCategory = _db.RecipeCategory.Where(x => x.Id == rec.RecipeCategory.Id).FirstOrDefault();
 
 			name = rec.Name; 
 			description = rec.Description;
@@ -43,6 +46,10 @@ namespace RecipeKeeper.Areas.Administration.Pages
 			detail = rec.Detail;
 
 			ViewData["thisRecipe"] = rec;
+			ViewData["RecipeCategoryList"] = _db.RecipeCategory.ToList();
+			ViewData["IngredientsList"] = _db.Ingredient.ToList();
+			ViewData["UOMList"] = _db.UOM.ToList();
+			ViewData["RecipeList"] = _db.Recipe.ToList();
 		}
 
 
@@ -50,7 +57,7 @@ namespace RecipeKeeper.Areas.Administration.Pages
 			if (ModelState.IsValid)
 			{
 				int displayOrder = 0;
-				Recipe theRecipeWeAreEditing = (from r in db.Recipe
+				Recipe theRecipeWeAreEditing = (from r in _db.Recipe
 												where r.Id == RecipeId
 												select r).FirstOrDefault();
 
@@ -82,16 +89,16 @@ namespace RecipeKeeper.Areas.Administration.Pages
 
 
 				//First we have to delete existing recipe_ingredients...
-				IEnumerable<Recipe_Ingredient> riToRevome = from ri in db.Recipe_Ingredient
+				IEnumerable<Recipe_Ingredient> riToRevome = from ri in _db.Recipe_Ingredient
 															where ri.RecipeId == RecipeId
 															select ri;
-				foreach (var ri in riToRevome) { db.Recipe_Ingredient.Remove(ri); }
+				foreach (var ri in riToRevome) { _db.Recipe_Ingredient.Remove(ri); }
 
 				//next we have to delete existing relatedRecipes
-				IEnumerable<RelatedRecipe> rrListToDelete = from rr in db.RelatedRecipe
+				IEnumerable<RelatedRecipe> rrListToDelete = from rr in _db.RelatedRecipe
 															where rr.RecipeId == RecipeId
 															select rr;
-				foreach (var rr in rrListToDelete) { db.RelatedRecipe.Remove(rr); }
+				foreach (var rr in rrListToDelete) { _db.RelatedRecipe.Remove(rr); }
 
 
 				theRecipeWeAreEditing.Id = RecipeId;
@@ -104,7 +111,7 @@ namespace RecipeKeeper.Areas.Administration.Pages
 
 				//recipe category...
 				var rcId = int.Parse(Request.Form.Where(k => k.Key.StartsWith("RecipeCategory")).ToList().FirstOrDefault().Value);
-				RecipeCategory thisRecipeCategory = (from rc in db.RecipeCategory
+				RecipeCategory thisRecipeCategory = (from rc in _db.RecipeCategory
 													 where rc.Id == rcId
 													 select rc).FirstOrDefault();
 
@@ -113,7 +120,7 @@ namespace RecipeKeeper.Areas.Administration.Pages
 				theRecipeWeAreEditing.UpdatedById = User.FindFirstValue(ClaimTypes.NameIdentifier);
 				theRecipeWeAreEditing.UpdatedDateUTC = DateTime.UtcNow;
 
-				db.SaveChanges();
+				_db.SaveChanges();
 				return RedirectToPage("Recipes");
 			}
 			return Page();
