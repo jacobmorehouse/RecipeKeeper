@@ -10,9 +10,11 @@ namespace RecipeKeeper.Areas.Administration.Pages
 		[BindProperty]
 		public Ingredient thisIngredient { get; set; }
 
+
+		public thisDb db = new thisDb();
+
 		public void OnGet(int IngredientID)
 		{
-			var db = new thisDb();
 			Ingredient ing = (from a in db.Ingredient
 									  where a.Id == IngredientID
 									  select a).FirstOrDefault();
@@ -27,7 +29,6 @@ namespace RecipeKeeper.Areas.Administration.Pages
 			if (ModelState.IsValid)
 			{
 				//TODO if ID not found, do nothing and just go back to the Ingredient menu page. 
-				var db = new thisDb();
 				Ingredient ingInDB = (from ic in db.Ingredient
 										where ic.Id == thisIngredient.Id
 										select ic).FirstOrDefault();

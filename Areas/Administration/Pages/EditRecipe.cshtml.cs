@@ -24,9 +24,11 @@ namespace RecipeKeeper.Areas.Administration.Pages
 		public string? detail { get; set; }
 
 
+		public thisDb db = new thisDb();
+
+
 		public void OnGet(int RecipeId)
 		{
-			var db = new thisDb();
 			Recipe rec = (	from r in db.Recipe.Include(r => r.Ingredients).Include(r => r.RelatedRecipes).Include(r => r.RecipeCategory)
 							where r.Id == RecipeId
 							select r).FirstOrDefault();
@@ -47,7 +49,6 @@ namespace RecipeKeeper.Areas.Administration.Pages
 		public IActionResult OnPost(int RecipeId) {
 			if (ModelState.IsValid)
 			{
-				var db = new thisDb();
 				int displayOrder = 0;
 				Recipe theRecipeWeAreEditing = (from r in db.Recipe
 												where r.Id == RecipeId

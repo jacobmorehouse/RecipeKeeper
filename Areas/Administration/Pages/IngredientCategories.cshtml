@@ -16,6 +16,7 @@
 		<th>Edit</th>
 		<th>Delete</th>
 	</tr>
+
 	@foreach (IngredientCategory item in db.IngredientCategory.ToList())
 	{
 		bool isThisICUsed = (from x in db.Ingredient

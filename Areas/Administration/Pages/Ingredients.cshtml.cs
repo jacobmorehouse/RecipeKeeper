@@ -9,13 +9,14 @@ namespace RecipeKeeper.Areas.Administration.Pages
 {
 	public class IngredientsModel : PageModel
 	{
+		public thisDb db = new thisDb();
+
 		public void OnGet()
 		{
 		}
 
 		public IActionResult OnPostDelete()
 		{
-			var db = new thisDb();
 			var ingredientId = int.Parse(Request.Form["ingredientId"]);
 
 			var thisIngredient = (from i in db.Ingredient

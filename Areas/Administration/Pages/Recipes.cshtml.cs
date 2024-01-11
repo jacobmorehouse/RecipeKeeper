@@ -6,13 +6,14 @@ namespace RecipeKeeper.Areas.Administration.Pages
 {
     public class RecipesModel : PageModel
     {
-        public void OnGet()
+		public thisDb db = new thisDb();
+
+		public void OnGet()
         {
         }
 
 		public IActionResult OnPostDelete()
 		{
-			var db = new thisDb();
 			var recipeId = int.Parse(Request.Form["recipeId"]);
 
 			var thisRecipe = (from i in db.Recipe
@@ -33,12 +34,8 @@ namespace RecipeKeeper.Areas.Administration.Pages
 				}
 
 
-
 				db.SaveChanges();
 			}
-
-			
-
 
 			return RedirectToPage("Recipes");
 		}

@@ -21,7 +21,7 @@ namespace RecipeKeeper.Areas.Administration.Pages
 		[BindProperty]
 		public string? detail { get; set; }
 
-
+		public thisDb db = new thisDb();
 
 		public void OnGet()
 		{
@@ -34,10 +34,7 @@ namespace RecipeKeeper.Areas.Administration.Pages
 				newRecipe.Name = name;
 				newRecipe.Description = description;
 				newRecipe.Detail = detail;
-
-				var db = new thisDb();
 				int displayOrder = 0;
-
 
 				//Ingredient logic
 				foreach (var ingItem in from ing in Request.Form where ing.Key.StartsWith("ingredientOption") select ing) {

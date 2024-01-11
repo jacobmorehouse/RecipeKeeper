@@ -10,6 +10,8 @@ namespace RecipeKeeper.Areas.Administration.Pages
 		[BindProperty]
 		public Ingredient newIngredient { get; set; }
 
+		public thisDb db = new thisDb();
+
 		public void OnGet()
 		{
 		}
@@ -20,7 +22,6 @@ namespace RecipeKeeper.Areas.Administration.Pages
 				newIngredient.AddedById = User.FindFirstValue(ClaimTypes.NameIdentifier);
 				newIngredient.AddedDateTimeUTC = DateTime.UtcNow;
 
-				var db = new thisDb();
 				db.Ingredient.Add(newIngredient);
 				db.SaveChanges();
 			}
