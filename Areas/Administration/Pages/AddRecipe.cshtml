@@ -9,10 +9,10 @@
 <div class="row">
 	<div class="col-md-6">
 		<form method="post">
+			<div asp-validation-summary="All"></div>
 			<input type="hidden" name="ingredientCount" id="ingredientCount" value="0" />
 			<input type="hidden" name="relatedRecipeCount" id="relatedRecipeCount" value="0" />
 
-			<div asp-validation-summary="All"></div>
 			<div class="mb-3">
 				<label class="form-label">Name</label>
 				<input type="text" asp-for="name" class="form-control" />
@@ -31,7 +31,7 @@
 			<div class="mb-3">
 				<label class="form-label">Category</label>
 				<select asp-for="recipeCategory" class="form-select">
-					@foreach (var rc in (List<RecipeCategory>)ViewData["RecipeCategoryList"])
+					@foreach (var rc in Model.RecipeCategoryList)
 					{
 						<!option value="@rc.Id">@rc.Name</!option>
 					}
@@ -81,7 +81,7 @@
 		var relatedReciptCount_el = document.getElementById("relatedRecipeCount");
 		var thisRelatedRecipeId = (parseInt(relatedReciptCount_el.value) + 1);
 
-		@foreach (var r in (List<Recipe>)ViewData["RecipeList"])
+		@foreach (var r in Model.RecipeList)
 		{
 			<text>recipeOptions += '<option value="@r.Id">@r.Name</option>'; </text>
 		}
@@ -117,13 +117,13 @@
 		var thisIngredientId = (parseInt(ingredientCount_el.value) + 1);
 		var ingredientOptions = '<option value=""></option>';
 
-		@foreach (var i in (List<Ingredient>)ViewData["IngredientList"])
+		@foreach (var i in Model.ingredientList)
 		{
 			<text>ingredientOptions += '<option value="@i.Id">@i.Name</option>'; </text>
 		}
 
 		var uomOptions = '<option value=""></option>';
-		@foreach (var u in (List<UOM>)ViewData["UOMList"])
+		@foreach (var u in Model.UOMList)
 		{
 			<text>uomOptions += '<option value="@u.Id">@u.Name</option>'; </text>
 		}

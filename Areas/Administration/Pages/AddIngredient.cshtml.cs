@@ -11,6 +11,9 @@ namespace RecipeKeeper.Areas.Administration.Pages
 		public Ingredient newIngredient { get; set; }
 		public RKContext _db;
 
+		[ViewData]
+		public List<IngredientCategory> IngredientCategoryList { get; set; }
+
 		public AddIngredientModel(RKContext db)
 		{
 			_db = db;
@@ -18,7 +21,7 @@ namespace RecipeKeeper.Areas.Administration.Pages
 
 		public void OnGet()
 		{
-			ViewData["IngredientCategoryList"] = _db.IngredientCategory.ToList();
+			IngredientCategoryList = _db.IngredientCategory.ToList();
 		}
 
 		public IActionResult OnPost() {
@@ -29,9 +32,13 @@ namespace RecipeKeeper.Areas.Administration.Pages
 
 				_db.Ingredient.Add(newIngredient);
 				_db.SaveChanges();
+				return RedirectToPage("Ingredients");
+			} else {
+				IngredientCategoryList = _db.IngredientCategory.ToList();
+				return Page();
 			}
 
-			return RedirectToPage("Ingredients");
+			
 		}
 	}
 }

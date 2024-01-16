@@ -11,10 +11,9 @@ namespace RecipeKeeper.Data.Models
 
 		[Required]
 		[MinLength(3, ErrorMessage = "The Name should be at least 3 characters.")]
-		[MaxLength(500)]
+		[MaxLength(100)]
 		public string Name { get; set; }
 
-		
 		public string? AddedById { get; set; }
 		public DateTime? AddedDateTimeUTC { get; set; }
 		public string? UpdatedById { get; set; }

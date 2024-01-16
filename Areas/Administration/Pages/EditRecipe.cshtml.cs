@@ -25,6 +25,24 @@ namespace RecipeKeeper.Areas.Administration.Pages
 
 		public RKContext _db;
 
+
+		[ViewData]
+		public List<RecipeCategory> RecipeCategoryList { get; set; }
+
+		[ViewData]
+		public List<Ingredient> ingredientList { get; set; }
+
+		[ViewData]
+		public List<UOM> UOMList { get; set; }
+
+		[ViewData]
+		public List<Recipe> RecipeList { get; set; }
+
+		[ViewData]
+		public Recipe thisRecipe { get; set; }
+
+
+
 		public EditRecipeModel(RKContext db) { 
 			_db = db;
 		}
@@ -45,11 +63,11 @@ namespace RecipeKeeper.Areas.Administration.Pages
 			recipeCategory = thisRecipeCategory.Id;
 			detail = rec.Detail;
 
-			ViewData["thisRecipe"] = rec;
-			ViewData["RecipeCategoryList"] = _db.RecipeCategory.ToList();
-			ViewData["IngredientsList"] = _db.Ingredient.ToList();
-			ViewData["UOMList"] = _db.UOM.ToList();
-			ViewData["RecipeList"] = _db.Recipe.ToList();
+			thisRecipe = rec;
+			RecipeCategoryList = _db.RecipeCategory.ToList();
+			ingredientList = _db.Ingredient.ToList();
+			UOMList = _db.UOM.ToList();
+			RecipeList = _db.Recipe.ToList();
 		}
 
 
@@ -123,8 +141,17 @@ namespace RecipeKeeper.Areas.Administration.Pages
 				_db.SaveChanges();
 				return RedirectToPage("Recipes");
 			}
-			return Page();
-			
+			else {
+				thisRecipe = (from r in _db.Recipe.Include(r => r.Ingredients).Include(r => r.RelatedRecipes).Include(r => r.RecipeCategory)
+									where r.Id == RecipeId
+									select r).FirstOrDefault();
+
+				RecipeCategoryList = _db.RecipeCategory.ToList();
+				ingredientList = _db.Ingredient.ToList();
+				UOMList = _db.UOM.ToList();
+				RecipeList = _db.Recipe.ToList();
+				return Page();
+			}
 		}
 	}
 }

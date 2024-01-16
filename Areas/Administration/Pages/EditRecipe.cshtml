@@ -9,20 +9,20 @@
 <div class="row">
 	<div class="col-md-6">
 		<form method="post">
+			<div asp-validation-summary="All"></div>
 			<input type="hidden" asp-for="Id" />
 			<input type="hidden" name="ingredientCount" id="ingredientCount" value="@thisRecipe.Ingredients.Count" />
 			<input type="hidden" name="relatedRecipeCount" id="relatedRecipeCount" value="@thisRecipe.RelatedRecipes.Count" />
 
-			<div asp-validation-summary="All"></div>
 			<div class="mb-3">
 				<label class="form-label">Name</label>
-				<input type="text" asp-for="name" required="required" class="form-control" />
+				<input type="text" asp-for="name" class="form-control" />
 				<span asp-validation-for="name"></span>
 			</div>
 
 			<div class="mb-3">
 				<label class="form-label">Description</label>
-				<textarea asp-for="description" required="required" class="form-control">
+				<textarea asp-for="description" class="form-control">
 
 				</textarea>
 				<span asp-validation-for="description"></span>
@@ -31,8 +31,8 @@
 			
 			<div class="mb-3">
 				<label class="form-label">Category</label>
-				<select name="RecipeCategory" class="form-select" required="required">
-					@foreach (var rc in (List<RecipeCategory>)ViewData["RecipeCategoryList"])
+				<select name="RecipeCategory" class="form-select">
+					@foreach (var rc in Model.RecipeCategoryList)
 					{
 						string selected = "";
 						if (rc.Id == thisRecipe.RecipeCategory.Id)
@@ -62,7 +62,7 @@
 								<ul class="list-group list-group-flush">
 									<li class="list-group-item">
 										<select name="ingredientOption@(ingredientCounter)" class="form-select" required="required">
-											@foreach (var il in (List<Ingredient>)ViewData["IngredientsList"])
+											@foreach (var il in Model.ingredientList)
 											{
 												string selected = "";
 												if (il.Id == i.IngredientId)
@@ -78,7 +78,7 @@
 										<div class="input-group mb-3">
 											<input name="ingredientUnitValue@(ingredientCounter)" type="number" class="form-control" placeholder="0" value="@i.Quantity" required="required">
 											<select name="ingredientUOM@(ingredientCounter)" class="form-select" required="required">
-												@foreach (var uo in (List<UOM>)ViewData["UOMList"])
+												@foreach (var uo in Model.UOMList)
 												{
 													string selected = "";
 													if (uo.Id == i.UOMId)
@@ -133,7 +133,7 @@
 								<ul class="list-group list-group-flush">
 									<li class="list-group-item">
 										<select name="relatedRecipeOption@(relatedRecipeCounter)" class="form-select" required="required">
-											@foreach (var r in (List<Recipe>)ViewData["RecipeList"])
+											@foreach (var r in Model.RecipeList)
 											{
 												string selected = "";
 												if (r.Id == rr.relatedRecipeId)
@@ -178,7 +178,7 @@
 
 		var someIdTODO = 1;
 
-		@foreach (var r in (List<Recipe>)ViewData["RecipeList"])
+		@foreach (var r in Model.RecipeList)
 		{
 			<text>recipeOptions += '<option value="@r.Id">@r.Name</option>'; </text>
 		}
@@ -213,13 +213,13 @@
 		var thisIngredientId = (parseInt(ingredientCount_el.value) + 1);
 		var ingredientOptions = '<option value=""></option>';
 
-		@foreach (var i in (List<Ingredient>)ViewData["IngredientsList"])
+		@foreach (var i in Model.ingredientList)
 		{
 			<text>ingredientOptions += '<option value="@i.Id">@i.Name</option>'; </text>
 		}
 
 				var uomOptions = '<option value=""></option>';
-		@foreach (var u in (List<UOM>)ViewData["UOMList"])
+		@foreach (var u in Model.UOMList)
 		{
 			<text>uomOptions += '<option value="@u.Id">@u.Name</option>'; </text>
 		}

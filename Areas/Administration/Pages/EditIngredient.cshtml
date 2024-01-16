@@ -9,6 +9,7 @@
 <div class="row">
 	<div class="col-md-6">
 		<form method="post">
+			<div asp-validation-summary="All"></div>
 			<input type="hidden" asp-for="thisIngredient.Id" />
 
 			<div class="mb-3">
@@ -26,8 +27,7 @@
 			<div class="mb-3">
 				<label class="form-label">Category</label>
 				<select class="form-select" asp-for="thisIngredient.IngredientCategoryId">
-					<option value=""></option>
-					@foreach (var n in (List<IngredientCategory>)ViewData["IngredientCategoryList"])
+					@foreach (var n in Model.IngredientCategoryList)
 					{
 						<option value="@n.Id">@n.Name</option>
 					}

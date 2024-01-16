@@ -40,11 +40,11 @@ namespace RecipeKeeper.Areas.Administration.Pages
 
 				icInDB.Name = thisCategory.Name;
 				_db.SaveChanges();
-
+				return RedirectToPage("IngredientCategories");
 			}
-			return RedirectToPage("IngredientCategories");
-
+			else { 
+				return Page();
+			}
 		}
-
 	}
 }

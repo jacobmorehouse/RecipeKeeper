@@ -30,6 +30,7 @@ builder.Services.AddAuthorization(options =>
 //For more about authorization: https://learn.microsoft.com/en-us/aspnet/core/security/authorization/razor-pages-authorization?view=aspnetcore-8.0#allow-anonymous-access-to-a-page
 builder.Services.AddRazorPages(options => {
 	options.Conventions.AllowAnonymousToPage("/Index");
+	options.Conventions.AllowAnonymousToPage("/ViewRecipe");
 	options.Conventions.AllowAnonymousToAreaFolder("Identity", "/Account");
 });
 

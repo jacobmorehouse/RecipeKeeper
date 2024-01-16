@@ -11,6 +11,9 @@ namespace RecipeKeeper.Areas.Administration.Pages
 		public Ingredient thisIngredient { get; set; }
 		public RKContext _db;
 
+		[ViewData]
+		public List<IngredientCategory> IngredientCategoryList { get; set; }
+
 		public EditIngredientModel(RKContext db) { 
 			_db = db;
 		}
@@ -26,7 +29,7 @@ namespace RecipeKeeper.Areas.Administration.Pages
 
 			this.thisIngredient = ing;
 
-			ViewData["IngredientCategoryList"] = _db.IngredientCategory.ToList(); 
+			IngredientCategoryList = _db.IngredientCategory.ToList(); 
 		}
 
 
@@ -35,8 +38,8 @@ namespace RecipeKeeper.Areas.Administration.Pages
 			{
 				//TODO if ID not found, do nothing and just go back to the Ingredient menu page. 
 				Ingredient ingInDB = (from ic in _db.Ingredient
-										where ic.Id == thisIngredient.Id
-										select ic).FirstOrDefault();
+									  where ic.Id == thisIngredient.Id
+									  select ic).FirstOrDefault();
 
 				ingInDB.Name = thisIngredient.Name;
 				ingInDB.Description = thisIngredient.Description;
@@ -48,9 +51,14 @@ namespace RecipeKeeper.Areas.Administration.Pages
 				ingInDB.UpdatedDateUTC = DateTime.UtcNow;
 
 				_db.SaveChanges();
+				return RedirectToPage("Ingredients");
+			}
+			else {
+				IngredientCategoryList = _db.IngredientCategory.ToList();
+				return Page();
 			}
 
-			return RedirectToPage("Ingredients");
+			
 		}
 	}
 }
